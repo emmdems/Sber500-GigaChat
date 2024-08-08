@@ -8,23 +8,23 @@ giga_chat_auth = os.getenv("GigaChat_Auth")
 #data=[Model(id_='GigaChat', object_='model', owned_by='salutedevices'), 
 #Model(id_='GigaChat-Plus', object_='model', owned_by='salutedevices'), 
 #Model(id_='GigaChat-Pro', object_='model', owned_by='salutedevices')] object_='list'
-chat = GigaChat(model="GigaChat", credentials=giga_chat_auth, temperature=1.2, max_tokens=600, profanity_check=True);
+chat = GigaChat(model="GigaChat-Pro", credentials=giga_chat_auth, temperature=1.4, profanity_check=True);
 
 #print(chat.get_num_tokens("Сколько токенов в этой строке"));
 
 messages = [
     AIMessage(
-        content="Ты бот-писатель детективных и приключенческих историй. \n" + 
+        content="Ты писатель детективных и приключенческих текстов. \n" + 
         "Ты на переданное тебе предложение \n" +
-        "пишешь красочное, детальное продолжение истории с количеством не больше 90 слов. \n" +
-        "История происходит только в одной локации и повествование ведется от главного героя. \n" + 
-        "Главный герой был задан в переданном тебе тексте, если нет, то ты его создаешь сам. \n" + 
-        "В конце твоего рассказа история никогда не заканчивается, а ты ставишь многоточии."
+        "пишешь красочное, детальное, но не полное продолжение текста. \n" +
+        "Всё происходит в одной локации."
     )
 ]
 
+chat_2 = GigaChat(model="GigaChat-Pro", credentials=giga_chat_auth, temperature=1.4, profanity_check=True);
+
 messages_2 = [
-    SystemMessage(
+    AIMessage(
         content="Ты должен предложить 3 коротких варианта на выбор продолжения текста. Не больше 10 слов."
     )
 ]
@@ -37,5 +37,5 @@ while(True):
     messages.append(res)
     print("Bot: ", res.content)
     messages_2.append(HumanMessage(content=res.content))
-    res = chat(messages_2)
-    print("Varients: ", res.content)
+    res = chat_2(messages_2)
+    print("Varients: \n", res.content)
